@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Set;
+
 
 @Entity
 @Getter 
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-Table(name = "pets")
+@Table(name = "pets")
 
 public class Pet {
 

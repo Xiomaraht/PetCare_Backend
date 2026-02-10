@@ -15,7 +15,6 @@ import lombok.*;
         uniqueConstraints = @UniqueConstraint(name = "uk_product", columnNames = {"name",  "brand"})
 )
 public class Product {
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,7 +40,7 @@ public class Product {
 
     //relacion OneToMany con BillDetail
     @OneToMany(mappedBy = "product")
-    private List<BillDetail> billDetails;
+    private List<BillDetail> billDetail;
 
     //relacion ManyToMany con Wishlists
     @ManyToMany(fetch = FetchType.LAZY)

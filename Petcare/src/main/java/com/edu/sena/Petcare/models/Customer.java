@@ -1,18 +1,17 @@
 package com.edu.sena.Petcare.models;
 
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Set;
-
-import org.w3c.dom.DocumentType;
+import java.util.List;
 
 @Entity
-@Getter 
+@Table(name = "customers")
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-Table(name = "customers")
-
+@Builder
 public class Customer {
 
     @Id
@@ -26,11 +25,10 @@ public class Customer {
     private String email;
 
     private String phone;
-
     private String address;
 
     @OneToOne
-    @JoinColumn(name="id_user")
+    @JoinColumn(name = "id_user")
     private User user;
 
     @ManyToOne
@@ -47,10 +45,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Bill> facturas;
 
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy = "customer")
     private List<MethodPaymentCustomer> metodosPagoCliente;
 
     @OneToMany(mappedBy = "customer")
     private List<Wishlist> whishlists;
-    
 }
