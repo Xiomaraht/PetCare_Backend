@@ -3,9 +3,9 @@ package com.edu.sena.Petcare.Config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.Bean;
 
 @Configuration
-@EnableM
 public class SecurityBeans {
 
     @Bean
