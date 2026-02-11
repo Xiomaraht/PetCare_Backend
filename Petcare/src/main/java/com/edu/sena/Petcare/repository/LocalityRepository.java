@@ -1,5 +1,11 @@
 package com.edu.sena.Petcare.repository;
 
-public class LocalityRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.edu.sena.Petcare.models.Locality;
+
+@Repository
+public interface LocalityRepository extends JpaRepository<Locality, Long> {
+
 }
