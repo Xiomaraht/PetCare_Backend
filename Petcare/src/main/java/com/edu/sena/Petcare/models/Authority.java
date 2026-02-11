@@ -2,13 +2,15 @@ package com.edu.sena.Petcare.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "authorities")
+@Table(name = "authority")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class Authority extends AbstractAuditingEntity {
 
     @Id
