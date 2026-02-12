@@ -48,6 +48,8 @@
         <version>0.11.5</version>
     </dependency>
 
+		<!--modelmapper -->
+
     <!-- Spring Boot -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -101,6 +103,12 @@
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-test</artifactId>
         <scope>test</scope>
+    </dependency>
+
+	<dependency>
+        <groupId>org.modelmapper</groupId>
+        <artifactId>modelmapper</artifactId>
+        <version>3.2.1</version>
     </dependency>
 
 </dependencies>

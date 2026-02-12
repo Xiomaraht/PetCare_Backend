@@ -27,6 +27,9 @@ public class Customer {
     private String phone;
     private String address;
 
+    @Column(nullable = false)
+    private String documentNumber;
+
     @OneToOne
     @JoinColumn(name = "id_user")
     private User user;
