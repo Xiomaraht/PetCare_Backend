@@ -21,13 +21,13 @@ public class ExamServiceImpl implements ExamsService {
     private final ExamsRepository examsRepository;
 
     @Override
-    public ExamsDTO create(ExamsregistrationDTO dto) { 
+    public ExamsDTO create(ExamsRegistrationDTO dto) { 
         Exams exam = ExamMapper.toEntity(dto);
         return ExamMapper.toDTO(examsRepository.save(exam));
     }
 
     @Override
-    public ExamsDTO update(Long id, ExamsregistrationDTO dto) {
+    public ExamsDTO update(Long id, ExamsRegistrationDTO dto) {
         Exams exam = examsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with ID: " + id)); 
 

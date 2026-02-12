@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.sena.Petcare.dto.CategoryDTO;
-import com.edu.sena.Petcare.services.CategoryService;
-import lombok.RequiredArgsConstructor;
+import com.edu.sena.Petcare.service.CategoryService;
 
 @RestController
 @RequestMapping("/categories")

@@ -1,5 +1,10 @@
 package com.edu.sena.Petcare.service;
 
-public class DataService {
-    
+import com.edu.sena.Petcare.dto.RaceDTO;
+import com.edu.sena.Petcare.dto.SpecieDTO;
+import java.util.List;
+
+public interface DataService {
+    List<SpecieDTO> getAllSpecies();
+    List<RaceDTO> getRacesBySpecieId(Long specieId);
 }

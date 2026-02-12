@@ -1,6 +1,12 @@
 package com.edu.sena.Petcare.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import java.util.Date;
 
 @Service
 public class JwtService {

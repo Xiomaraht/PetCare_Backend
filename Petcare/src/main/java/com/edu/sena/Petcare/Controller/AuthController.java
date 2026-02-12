@@ -4,6 +4,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.http.ResponseEntity;
 import com.edu.sena.Petcare.service.JwtService;
 import com.edu.sena.Petcare.Controller.Request.LoginResponse;
@@ -25,13 +28,13 @@ public class AuthController {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getLogin(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
 
         UserDetails userDetails =
-                userDetailsService.loadUserByUsername(request.getLogin());
+                userDetailsService.loadUserByUsername(request.getUsername());
 
         String token = jwtService.generateToken(userDetails);
 

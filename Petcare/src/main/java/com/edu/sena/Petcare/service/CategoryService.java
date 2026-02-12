@@ -1,5 +1,10 @@
 package com.edu.sena.Petcare.service;
 
-public class CategoryService {
-    
+import java.util.List;
+
+import com.edu.sena.Petcare.dto.CategoryDTO;
+
+public interface CategoryService {
+
+    List<CategoryDTO> obtenerCategories();
 }

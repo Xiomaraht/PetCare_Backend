@@ -1,5 +1,10 @@
 package com.edu.sena.Petcare.service;
 
-public class NeighborhoodService {
-    
+import java.util.List;
+
+import com.edu.sena.Petcare.dto.NeighborhoodDTO;
+
+
+public interface NeighborhoodService {
+    List<NeighborhoodDTO> getAllNeighboors();
 }

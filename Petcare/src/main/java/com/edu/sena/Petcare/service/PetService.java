@@ -1,5 +1,24 @@
 package com.edu.sena.Petcare.service;
 
-public class PetService {
+import java.util.List;
+
+import com.edu.sena.Petcare.dto.PetDTO;
+import com.edu.sena.Petcare.dto.PetRegistrationDTO;
+
+public interface PetService {
+
     
+    PetDTO register(PetRegistrationDTO dto);
+
+    
+    PetDTO update(Long id, PetRegistrationDTO dto); 
+
+    
+    List<PetDTO> findAll();
+
+    
+    PetDTO findById(Long id);
+
+    
+    void delete(Long id);
 }
