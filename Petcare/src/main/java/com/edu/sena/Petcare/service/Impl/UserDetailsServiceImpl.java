@@ -5,7 +5,7 @@ import com.edu.sena.Petcare.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -17,15 +17,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
 
-    User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Usuario no encontrado"));
 
-    return org.springframework.security.core.userdetails.User
-            .withUsername(user.getUsername())
-            .password(user.getPassword())
-            .authorities(new ArrayList<>()) // 🔥 SIN ROLES POR AHORA
-            .build();
-}
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword()) // 🔐 contraseña ENCRIPTADA
+                .authorities(Collections.emptyList())
+                .build();
+    }
 }

@@ -4,19 +4,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.http.ResponseEntity;
+
 import com.edu.sena.Petcare.service.JwtService;
 import com.edu.sena.Petcare.Controller.Request.LoginResponse;
 import com.edu.sena.Petcare.Controller.Request.LoginRequest;
-import com.edu.sena.Petcare.service.AuthService;
-import jakarta.validation.*;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -24,20 +28,24 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+public ResponseEntity<LoginResponse> login(
+        @RequestBody LoginRequest request) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
+    System.out.println("USERNAME => " + request.getUsername());
+    System.out.println("PASSWORD => " + request.getPassword());
 
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(request.getUsername());
+    authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    request.getUsername(),
+                    request.getPassword()
+            )
+    );
 
-        String token = jwtService.generateToken(userDetails);
+    UserDetails userDetails =
+            userDetailsService.loadUserByUsername(request.getUsername());
 
-        return ResponseEntity.ok(new LoginResponse(token));
-    }
+    String token = jwtService.generateToken(userDetails);
+
+    return ResponseEntity.ok(new LoginResponse(token));
+}
 }

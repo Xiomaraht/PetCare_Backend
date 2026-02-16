@@ -1,26 +1,16 @@
 package com.edu.sena.Petcare.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-// Este DTO funcionará como respuesta, y como los datos que podran ser visibles para el customer
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class CustomerDTO {
 
     private Long id;
-
-    private String address;
-
-    private String addressDetail;
-
+    private String name;
+    private String email;
     private String phone;
-
-    private UserGetDTO user;
-
-    private String documenTypeName;
-
-    private String neighborhoodName;
+    private String address;
+    private Long userId;
 }
