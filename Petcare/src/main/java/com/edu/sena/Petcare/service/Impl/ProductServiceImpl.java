@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.edu.sena.Petcare.dto.ProductDTO;
 import com.edu.sena.Petcare.dto.ProductRegistrationDTO; 
-import com.edu.sena.Petcare.Exceptions.ResourceNotFoundException;
+import com.edu.sena.Petcare.exception.ResourceNotFoundException;
 import com.edu.sena.Petcare.mapper.ProductMapper;
 import com.edu.sena.Petcare.models.Category;
 import com.edu.sena.Petcare.models.Product;

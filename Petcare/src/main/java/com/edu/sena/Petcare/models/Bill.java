@@ -41,7 +41,7 @@ public class Bill {
     // relación con MethodPaymentCustomer
     @ManyToOne
     @JoinColumn(name = "id_method_payment_customer")
-    private MethodPaymentCustomer metodoCliente;
+    private PaymentMethod metodoCliente;
 
     // relación con BillDetail
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)

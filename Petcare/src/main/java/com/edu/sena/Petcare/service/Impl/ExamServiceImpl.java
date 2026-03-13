@@ -2,7 +2,7 @@ package com.edu.sena.Petcare.service.Impl;
 
 import com.edu.sena.Petcare.dto.ExamsRegistrationDTO; 
 import com.edu.sena.Petcare.dto.ExamsDTO;
-import com.edu.sena.Petcare.Exceptions.ResourceNotFoundException; 
+import com.edu.sena.Petcare.exception.ResourceNotFoundException; 
 import com.edu.sena.Petcare.mapper.ExamMapper;
 import com.edu.sena.Petcare.models.Exams;
 import com.edu.sena.Petcare.repository.ExamsRepository;

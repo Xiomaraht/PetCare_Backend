@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.Config;
+package com.edu.sena.Petcare.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

@@ -1,16 +1,11 @@
-package com.edu.sena.Petcare.Controller.Request;
+package com.edu.sena.Petcare.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class LoginRequest {
-
+@Setter
+public class LoginDto {
     private String username;
-
     private String password;
-
-
-    
 }

@@ -10,7 +10,7 @@ import com.edu.sena.Petcare.mapper.WishlistMapper;
 import com.edu.sena.Petcare.models.Customer;
 import com.edu.sena.Petcare.models.Product;
 import com.edu.sena.Petcare.models.Wishlist;
-import com.edu.sena.Petcare.Exceptions.ResourceNotFoundException;
+import com.edu.sena.Petcare.exception.ResourceNotFoundException;
 import com.edu.sena.Petcare.repository.CustomerRepository;
 import com.edu.sena.Petcare.repository.ProductRepository;
 import com.edu.sena.Petcare.repository.WishlistRepository;

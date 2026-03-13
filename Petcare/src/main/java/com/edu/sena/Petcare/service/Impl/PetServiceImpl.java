@@ -11,7 +11,7 @@ import com.edu.sena.Petcare.mapper.PetMapper;
 import com.edu.sena.Petcare.models.Customer;
 import com.edu.sena.Petcare.models.Pet;
 import com.edu.sena.Petcare.models.Race;
-import com.edu.sena.Petcare.Exceptions.ResourceNotFoundException;
+import com.edu.sena.Petcare.exception.ResourceNotFoundException;
 import com.edu.sena.Petcare.repository.CustomerRepository;
 import com.edu.sena.Petcare.repository.PetRepository;
 import com.edu.sena.Petcare.repository.RaceRepository;

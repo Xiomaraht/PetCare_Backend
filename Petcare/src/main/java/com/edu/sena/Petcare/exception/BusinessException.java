@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.Exceptions;
+package com.edu.sena.Petcare.exception;
 
 public class BusinessException extends RuntimeException{
     public BusinessException(String message){

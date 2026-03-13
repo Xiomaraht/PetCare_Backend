@@ -3,9 +3,9 @@ package com.edu.sena.Petcare.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.edu.sena.Petcare.models.MethodPaymentCustomer;
+import com.edu.sena.Petcare.models.PaymentMethod;
 
 @Repository
-public interface MethodPaymentCustomerRepository extends JpaRepository<MethodPaymentCustomer, Long> {
+public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Long> {
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class MethodPaymentCustomer {
+public class PaymentMethod {
 
     @EqualsAndHashCode.Include
     @Id

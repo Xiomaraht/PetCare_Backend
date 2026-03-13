@@ -10,8 +10,12 @@ import com.edu.sena.Petcare.dto.CustomerCreationDTO;
 import com.edu.sena.Petcare.dto.CustomerDTO;
 import com.edu.sena.Petcare.models.Customer;
 import com.edu.sena.Petcare.models.User;
+import com.edu.sena.Petcare.models.DocumentType;
+import com.edu.sena.Petcare.models.Neighborhood;
 import com.edu.sena.Petcare.repository.CustomerRepository;
 import com.edu.sena.Petcare.repository.UserRepository;
+import com.edu.sena.Petcare.repository.DocumentTypeRepository;
+import com.edu.sena.Petcare.repository.NeighborhoodRepository;
 import com.edu.sena.Petcare.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
+    private final DocumentTypeRepository documentTypeRepository;
+    private final NeighborhoodRepository neighborhoodRepository;
 
     @Override
     public CustomerDTO crearCustomer(CustomerCreationDTO dto) {
@@ -30,11 +36,22 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new RuntimeException("Usuario no existe"));
 
         Customer customer = new Customer();
-        customer.setName(dto.getName());
-        customer.setEmail(dto.getEmail());
+        customer.setName((user.getFirstName() != null ? user.getFirstName() : "") + " " + (user.getLastName() != null ? user.getLastName() : ""));
+        customer.setEmail(user.getEmail());
         customer.setPhone(dto.getPhone());
         customer.setAddress(dto.getAddress());
+        customer.setDocumentNumber(dto.getDocumentNumber());
         customer.setUser(user);
+
+        if (dto.getDocumentTypeId() != null) {
+            DocumentType dt = documentTypeRepository.findById(dto.getDocumentTypeId()).orElse(null);
+            customer.setDocumentType(dt);
+        }
+
+        if (dto.getNeighborhoodId() != null) {
+            Neighborhood nb = neighborhoodRepository.findById(dto.getNeighborhoodId()).orElse(null);
+            customer.setBarrioCliente(nb);
+        }
 
         Customer saved = customerRepository.save(customer);
 

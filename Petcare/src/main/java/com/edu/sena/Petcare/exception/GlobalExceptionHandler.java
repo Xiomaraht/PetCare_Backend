@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.Exceptions;
+package com.edu.sena.Petcare.exception;
 
 import java.util.HashMap;
 import java.util.Map;

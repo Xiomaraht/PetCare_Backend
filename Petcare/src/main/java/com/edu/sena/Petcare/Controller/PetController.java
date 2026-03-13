@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.Controller;
+package com.edu.sena.Petcare.controller;
 
 import com.edu.sena.Petcare.dto.PetDTO;
 import com.edu.sena.Petcare.dto.PetRegistrationDTO;

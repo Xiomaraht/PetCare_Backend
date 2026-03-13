@@ -49,7 +49,7 @@ public class Customer {
     private List<Bill> facturas;
 
     @OneToMany(mappedBy = "customer")
-    private List<MethodPaymentCustomer> metodosPagoCliente;
+    private List<PaymentMethod> metodosPagoCliente;
 
     @OneToMany(mappedBy = "customer")
     private List<Wishlist> whishlists;

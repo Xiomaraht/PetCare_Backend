@@ -44,5 +44,5 @@ public class Transactions {
     //relacion OneToMany con MethodPaymentCustomer
     @ManyToOne
     @JoinColumn(name = "id_payment_saved")
-    private MethodPaymentCustomer methodTransaction;
+    private PaymentMethod methodTransaction;
 }

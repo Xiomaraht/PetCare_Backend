@@ -1,24 +1,20 @@
 package com.edu.sena.Petcare.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     private Long id;
-
-    private String login;
-
-    private String names;
-
-    private String lastNames;
-
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String password; // optional, for creation
     private String email;
-
-    private String imageUrl;
-
-    private Long rolId;
-
+    private String role;
 }

@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.Exceptions;
+package com.edu.sena.Petcare.exception;
 
 public class BadRequestException extends RuntimeException{
     public BadRequestException(String message){

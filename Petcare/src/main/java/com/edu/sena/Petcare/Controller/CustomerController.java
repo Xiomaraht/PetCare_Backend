@@ -1,19 +1,46 @@
-package com.edu.sena.Petcare.Controller;
+package com.edu.sena.Petcare.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import com.edu.sena.Petcare.dto.CustomerCreationDTO;
 import com.edu.sena.Petcare.dto.CustomerDTO;
-import com.edu.sena.Petcare.Exceptions.ResourceNotFoundException;
 import com.edu.sena.Petcare.service.CustomerService;
-import lombok.SneakyThrows;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerService objetoCustomerService;
+    private final CustomerService customerService;
+
+    @PostMapping
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerCreationDTO customerCreationDTO) {
+        return ResponseEntity.ok(customerService.crearCustomer(customerCreationDTO));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+        return ResponseEntity.ok(customerService.obtenerCustomers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        return customerService.obtenerCustomerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+        return ResponseEntity.ok(customerService.actualizarCustomer(id, customerDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+        customerService.eliminarCustomer(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
