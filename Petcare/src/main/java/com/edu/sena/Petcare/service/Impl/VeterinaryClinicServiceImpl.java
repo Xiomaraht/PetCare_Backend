@@ -55,18 +55,12 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
              veterinaryClinic.setDocumentTypeVeterinary(docType);
         }
 
-        try {
-            VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
-            VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
-            if (veterinaryClinicGuardada.getUser() != null) {
-                result.setPicture(veterinaryClinicGuardada.getUser().getPicture());
-            }
-            return result;
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            throw new RuntimeException("Error de integridad de datos: El NIT o el usuario ya podrían estar registrados.");
-        } catch (Exception e) {
-            throw new RuntimeException("Error inesperado al registrar la veterinaria: " + e.getMessage());
+        VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
+        VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
+        if (veterinaryClinicGuardada.getUser() != null) {
+            result.setPicture(veterinaryClinicGuardada.getUser().getPicture());
         }
+        return result;
     }
 
     @Override
