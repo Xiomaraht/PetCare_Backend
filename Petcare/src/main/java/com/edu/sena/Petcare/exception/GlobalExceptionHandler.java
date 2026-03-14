@@ -60,7 +60,30 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value(), 
             "Validacion fallida");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);       
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            exception.getMessage(),
+            HttpStatus.INTERNAL_SERVER_ERROR.value(), 
+            "Error de ejecución procesado por el servidor");
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            "Conflict con datos existentes: El NIT o el Usuario ya están registrados.",
+            HttpStatus.CONFLICT.value(), 
+            "Violación de restricción de integridad de base de datos");
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception exception) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            "Ocurrió un error inesperado en el sistema.",
+            HttpStatus.INTERNAL_SERVER_ERROR.value(), 
+            exception.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
