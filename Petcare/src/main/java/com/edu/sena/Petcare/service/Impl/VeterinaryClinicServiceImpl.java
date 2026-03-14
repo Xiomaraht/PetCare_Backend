@@ -21,7 +21,15 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
     public final com.edu.sena.Petcare.repository.DocumentTypeRepository documentTypeRepository;
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public VeterinaryClinicDTO newVeterinaryClinic(VeterinaryClinicDTO veterinaryClinicDTO) {
+        // 1. Check if user already has a clinic (OneToOne constraint)
+        if (veterinaryClinicDTO.getUserId() != null) {
+            if (veterinaryClinicRepository.findByUser_Id(veterinaryClinicDTO.getUserId()).isPresent()) {
+                throw new RuntimeException("Este usuario ya tiene una veterinaria registrada.");
+            }
+        }
+
         VeterinaryClinic veterinaryClinic = new VeterinaryClinic();
         veterinaryClinic.setAddress(veterinaryClinicDTO.getAddress());
         veterinaryClinic.setPhone(veterinaryClinicDTO.getPhone());
@@ -34,18 +42,31 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
             veterinaryClinic.setUser(user);
         }
 
+        // 2. Resolve DocumentType robustly
         if (veterinaryClinicDTO.getIdDocumentType() != null) {
             com.edu.sena.Petcare.models.DocumentType docType = documentTypeRepository.findById(veterinaryClinicDTO.getIdDocumentType())
-                .orElseThrow(() -> new RuntimeException("Tipo de documento no encontrado con ID: " + veterinaryClinicDTO.getIdDocumentType()));
+                .or(() -> documentTypeRepository.findByAbreviation("NIT")) // fallback to NIT
+                .orElseThrow(() -> new RuntimeException("Tipo de documento no encontrado y falló la búsqueda de 'NIT'"));
             veterinaryClinic.setDocumentTypeVeterinary(docType);
+        } else {
+             // Default to NIT if not provided
+             com.edu.sena.Petcare.models.DocumentType docType = documentTypeRepository.findByAbreviation("NIT")
+                .orElseThrow(() -> new RuntimeException("No se proporcionó tipo de documento y no se encontró 'NIT' en la base de datos."));
+             veterinaryClinic.setDocumentTypeVeterinary(docType);
         }
 
-        VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
-        VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
-        if (veterinaryClinicGuardada.getUser() != null) {
-            result.setPicture(veterinaryClinicGuardada.getUser().getPicture());
+        try {
+            VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
+            VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
+            if (veterinaryClinicGuardada.getUser() != null) {
+                result.setPicture(veterinaryClinicGuardada.getUser().getPicture());
+            }
+            return result;
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new RuntimeException("Error de integridad de datos: El NIT o el usuario ya podrían estar registrados.");
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperado al registrar la veterinaria: " + e.getMessage());
         }
-        return result;
     }
 
     @Override
