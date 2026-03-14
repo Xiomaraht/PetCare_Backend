@@ -22,7 +22,7 @@ public class VeterinaryClinic {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(nullable = false, length = 12)
+    @Column(nullable = false, length = 20)
     private String phone;
 
     @Column(nullable = false, length = 255)

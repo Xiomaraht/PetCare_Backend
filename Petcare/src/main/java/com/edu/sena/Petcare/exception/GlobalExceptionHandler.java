@@ -60,6 +60,8 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value(), 
             "Validacion fallida");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);       
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
         ErrorResponse errorResponse = new ErrorResponse(
