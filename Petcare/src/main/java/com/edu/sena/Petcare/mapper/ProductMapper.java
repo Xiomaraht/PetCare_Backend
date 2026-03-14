@@ -38,6 +38,16 @@ public class ProductMapper {
                     .collect(Collectors.toList());
             dto.setCategoryIds(categoryIds);
         }
+        if (product.getVeterinaryClinic() != null) {
+            dto.setClinicId(product.getVeterinaryClinic().getId());
+            // Assuming VeterinaryClinic has an 'address' or 'name' we can use. 
+            // Let's check the VeterinaryClinic model. It doesn't have a 'name' field, maybe it uses 'address' or we should add 'name'.
+            // Actually, looking at Step 431, it has address, phone, email, documentNumber. 
+            // Wait, usually clinics have a name. I'll check the User associated with it if it has a name.
+            if (product.getVeterinaryClinic().getUser() != null) {
+                dto.setClinicName(product.getVeterinaryClinic().getUser().getFirstName());
+            }
+        }
         
         return dto;
     }

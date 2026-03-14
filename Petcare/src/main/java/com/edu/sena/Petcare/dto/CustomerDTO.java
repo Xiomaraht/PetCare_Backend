@@ -13,4 +13,5 @@ public class CustomerDTO {
     private String phone;
     private String address;
     private Long userId;
+    private String picture;
 }

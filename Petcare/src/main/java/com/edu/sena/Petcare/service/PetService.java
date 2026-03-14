@@ -20,5 +20,7 @@ public interface PetService {
     PetDTO findById(Long id);
 
     
+    List<PetDTO> findByCustomerId(Long customerId);
+
     void delete(Long id);
 }

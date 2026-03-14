@@ -49,4 +49,8 @@ public class VeterinaryClinic {
     //relacion OneToMany con Bill
     @OneToMany(mappedBy = "veterinaryClinic")
     private List<Bill> facturas;
+
+    //relacion OneToMany con Product
+    @OneToMany(mappedBy = "veterinaryClinic")
+    private List<Product> products;
 }

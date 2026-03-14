@@ -16,5 +16,7 @@ public class ProductDTO {
     private Integer stock;
     private String brand;
     private String description;
-    private List<Long> categoryIds; 
+    private List<Long> categoryIds;
+    private Long clinicId;
+    private String clinicName;
 }

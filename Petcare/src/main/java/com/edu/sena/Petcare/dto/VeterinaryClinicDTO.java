@@ -20,5 +20,6 @@ public class VeterinaryClinicDTO {
 
     private Long userId;
     private Long idDocumentType;
+    private String picture;
 
 }

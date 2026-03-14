@@ -17,6 +17,8 @@ public class DataInitializer implements CommandLineRunner {
     private final DocumentTypeRepository documentTypeRepository;
     private final LocalityRepository localityRepository;
     private final NeighborhoodRepository neighborhoodRepository;
+    private final SpecieRepository specieRepository;
+    private final RaceRepository raceRepository;
 
     @Override
     public void run(String... args) {
@@ -72,6 +74,35 @@ public class DataInitializer implements CommandLineRunner {
                 nb.setName(n);
                 nb.setLocality(locality);
                 neighborhoodRepository.save(nb);
+            }
+        }
+
+        // --- Species & Races ---
+        if (specieRepository.count() == 0) {
+            Specie perro = new Specie();
+            perro.setName("Perro");
+            perro = specieRepository.save(perro);
+
+            Specie gato = new Specie();
+            gato.setName("Gato");
+            gato = specieRepository.save(gato);
+
+            // Razas Perro
+            String[] razasPerro = {"Labrador", "Golden Retriever", "Poodle", "Bulldog", "Pastor Alemán", "Yorkshire Terrier", "Chihuahua", "Beagle", "Boxer", "Husky Siberiano"};
+            for (String r : razasPerro) {
+                Race race = new Race();
+                race.setName(r);
+                race.setEspecie(perro);
+                raceRepository.save(race);
+            }
+
+            // Razas Gato
+            String[] razasGato = {"Persa", "Maine Coon", "Siamés", "Bengalí", "Sphynx", "Ragdoll", "Abisinio", "Birmano", "Ruso Azul", "Angora"};
+            for (String r : razasGato) {
+                Race race = new Race();
+                race.setName(r);
+                race.setEspecie(gato);
+                raceRepository.save(race);
             }
         }
 

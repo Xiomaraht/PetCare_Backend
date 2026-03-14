@@ -17,4 +17,5 @@ public class UserDTO {
     private String password; // optional, for creation
     private String email;
     private String role;
+    private String picture;
 }

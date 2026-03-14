@@ -44,6 +44,9 @@ public class User extends AbstractAuditingEntity {
     @Column(name = "reset_token_expiry")
     private java.time.LocalDateTime resetTokenExpiry;
 
+    @Column(name = "picture")
+    private String picture;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Token> tokens;
 }

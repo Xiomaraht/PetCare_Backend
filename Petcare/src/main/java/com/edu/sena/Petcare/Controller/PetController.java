@@ -26,6 +26,12 @@ public class PetController {
         return petService.register(dto);
     }
 
+    @PostMapping("/customer/{customerId}")
+    public PetDTO registerForCustomer(@PathVariable Long customerId, @RequestBody PetRegistrationDTO dto) {
+        dto.setCustomerId(customerId);
+        return petService.register(dto);
+    }
+
     @GetMapping
     public List<PetDTO> getAll() {
         return petService.findAll();
@@ -34,6 +40,11 @@ public class PetController {
     @GetMapping("/{id}")
     public PetDTO getById(@PathVariable Long id) {
         return petService.findById(id);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public List<PetDTO> getByCustomerId(@PathVariable Long customerId) {
+        return petService.findByCustomerId(customerId);
     }
 
     @DeleteMapping("/{id}")

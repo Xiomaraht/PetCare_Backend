@@ -94,4 +94,12 @@ public class PetServiceImpl implements PetService {
 
         return PetMapper.toDTO(petRepository.save(pet));
     }
+
+    @Override
+    public List<PetDTO> findByCustomerId(Long customerId) {
+        return petRepository.findByCustomerId(customerId)
+                .stream()
+                .map(PetMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

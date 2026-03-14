@@ -59,16 +59,18 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/users/create",
                                 "/api/customers/**",
-                                "/api/services", "/api/services/**",
-                                "/api/products", "/api/products/**",
                                 "/api/categories", "/api/categories/**",
                                 "/api/neighborhoods", "/api/neighborhoods/**",
                                 "/api/veterinary-clinics", "/api/veterinary-clinics/**",
+                                "/api/products/**", "/api/services/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/error")
                         .permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**", "/api/services/**").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/products/**", "/api/services/**").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**", "/api/services/**").authenticated()
                         .anyRequest().authenticated()
                 );
 

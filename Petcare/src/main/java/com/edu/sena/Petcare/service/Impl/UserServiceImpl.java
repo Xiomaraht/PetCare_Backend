@@ -28,15 +28,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO save(UserDTO userDTO) {
         if (userDTO.getUsername() == null || userDTO.getUsername().trim().isEmpty()) {
-            throw new RuntimeException("El nombre de usuario es obligatorio");
+            throw new RuntimeException("ERROR_USERNAME_REQUIRED: El nombre de usuario es obligatorio");
         }
         
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-            throw new RuntimeException("El nombre de usuario '" + userDTO.getUsername() + "' ya está en uso");
+            throw new RuntimeException("ERROR_USERNAME_EXISTS: El nombre de usuario '" + userDTO.getUsername() + "' ya está en uso");
         }
 
         if (userDTO.getEmail() != null && userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("El correo electrónico '" + userDTO.getEmail() + "' ya está registrado");
+            throw new RuntimeException("ERROR_EMAIL_EXISTS: El correo electrónico '" + userDTO.getEmail() + "' ya está registrado");
         }
 
         User user = new User();
@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+        user.setPicture(userDTO.getPicture());
 
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encodedPassword);
@@ -71,6 +72,8 @@ public class UserServiceImpl implements UserService {
                         existingUser.setLastName(userDTO.getLastName());
                     if (userDTO.getEmail() != null)
                         existingUser.setEmail(userDTO.getEmail());
+                    if (userDTO.getPicture() != null)
+                        existingUser.setPicture(userDTO.getPicture());
                     // Password update should be separate mostly, but basic support:
                     if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
                         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -114,6 +117,7 @@ public class UserServiceImpl implements UserService {
                 user.getLastName(),
                 null, // Password hidden
                 user.getEmail(),
-                user.getAuthority() != null ? user.getAuthority().getName() : null);
+                user.getAuthority() != null ? user.getAuthority().getName() : null,
+                user.getPicture());
     }
 }

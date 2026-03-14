@@ -22,7 +22,11 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
 
     @Override
     public VeterinaryClinicDTO newVeterinaryClinic(VeterinaryClinicDTO veterinaryClinicDTO) {
-        VeterinaryClinic veterinaryClinic = veterinaryClinicMapper.toEntity(veterinaryClinicDTO);
+        VeterinaryClinic veterinaryClinic = new VeterinaryClinic();
+        veterinaryClinic.setAddress(veterinaryClinicDTO.getAddress());
+        veterinaryClinic.setPhone(veterinaryClinicDTO.getPhone());
+        veterinaryClinic.setEmail(veterinaryClinicDTO.getEmail());
+        veterinaryClinic.setDocumentNumber(veterinaryClinicDTO.getDocumentNumber());
         
         if (veterinaryClinicDTO.getUserId() != null) {
             com.edu.sena.Petcare.models.User user = userRepository.findById(veterinaryClinicDTO.getUserId())
@@ -37,20 +41,34 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
         }
 
         VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
-        return veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
+        VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
+        if (veterinaryClinicGuardada.getUser() != null) {
+            result.setPicture(veterinaryClinicGuardada.getUser().getPicture());
+        }
+        return result;
     }
 
     @Override
     public List<VeterinaryClinicDTO> getAllVeterinaryClinics() {
-        List<VeterinaryClinic> veterinarias = veterinaryClinicRepository.findAll();
-        return veterinarias.stream().map(veterinaryClinicMapper::toDTO).toList();
+        return veterinaryClinicRepository.findAll().stream()
+            .map(vc -> {
+                VeterinaryClinicDTO dto = veterinaryClinicMapper.toDTO(vc);
+                if (vc.getUser() != null) {
+                    dto.setPicture(vc.getUser().getPicture());
+                }
+                return dto;
+            }).toList();
     }
 
     @Override
     public VeterinaryClinicDTO getSpecificVeterinaryClinic(Long id) {
         VeterinaryClinic veterinaryClinic = veterinaryClinicRepository.findById(id)
         .orElseThrow(()-> new RuntimeException("No se encontro la veterinaria por ID " + id));
-        return veterinaryClinicMapper.toDTO(veterinaryClinic);
+        VeterinaryClinicDTO dto = veterinaryClinicMapper.toDTO(veterinaryClinic);
+        if (veterinaryClinic.getUser() != null) {
+            dto.setPicture(veterinaryClinic.getUser().getPicture());
+        }
+        return dto;
 
     }
 
@@ -62,7 +80,11 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
         veterinaryClinicMapper.toEntity(veterinaryClinicDTO, veterinaryClinicExiste);
 
         VeterinaryClinic veterinaryClinicActualizada = veterinaryClinicRepository.save(veterinaryClinicExiste);
-        return veterinaryClinicMapper.toDTO(veterinaryClinicActualizada);
+        VeterinaryClinicDTO result = veterinaryClinicMapper.toDTO(veterinaryClinicActualizada);
+        if (veterinaryClinicActualizada.getUser() != null) {
+            result.setPicture(veterinaryClinicActualizada.getUser().getPicture());
+        }
+        return result;
     }
 
     @Override

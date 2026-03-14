@@ -57,4 +57,9 @@ public class Product {
                 inverseJoinColumns = @JoinColumn(name="id_category")
     )
     private List<Category> categories;
+
+    //relacion ManyToOne con VeterinaryClinic
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_veterinary_clinic")
+    private VeterinaryClinic veterinaryClinic;
 }
