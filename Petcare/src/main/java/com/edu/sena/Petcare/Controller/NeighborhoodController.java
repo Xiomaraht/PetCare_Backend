@@ -12,7 +12,7 @@ import com.edu.sena.Petcare.service.NeighborhoodService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/neighborhoods")
+@RequestMapping("/api/neighborhoods")
 @RequiredArgsConstructor
 public class NeighborhoodController {
 

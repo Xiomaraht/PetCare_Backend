@@ -25,7 +25,8 @@ public class ServiceMapper {
                     service.getVeterinaryClinics()
                             .stream()
 
-                            .map(VeterinaryClinic::getDocumentNumber) 
+                            .filter(clinic -> clinic != null)
+                            .map(clinic -> clinic.getDocumentNumber() != null ? clinic.getDocumentNumber() : "S/N") 
                             .collect(Collectors.toList())
             );
         } else {

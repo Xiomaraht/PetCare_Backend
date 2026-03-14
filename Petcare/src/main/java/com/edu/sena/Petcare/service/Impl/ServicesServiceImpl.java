@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@org.springframework.transaction.annotation.Transactional
 public class ServicesServiceImpl implements ServicesService {
 
     private final ServicesRepository serviceRepository;
@@ -26,10 +27,12 @@ public class ServicesServiceImpl implements ServicesService {
         
         Services service = ServiceMapper.toEntity(dto);
 
-        List<VeterinaryClinic> clinics = veterinaryClinicRepository
-            .findAllById(dto.getVeterinaryClinicIds());
-
-        service.setVeterinaryClinics(clinics);
+        if (dto.getVeterinaryClinicIds() != null && !dto.getVeterinaryClinicIds().isEmpty()) {
+            List<VeterinaryClinic> clinics = veterinaryClinicRepository.findAllById(dto.getVeterinaryClinicIds());
+            service.setVeterinaryClinics(clinics);
+        } else {
+            service.setVeterinaryClinics(new ArrayList<>());
+        }
          
         return ServiceMapper.toDTO(serviceRepository.save(service));
     }
@@ -45,9 +48,13 @@ public class ServicesServiceImpl implements ServicesService {
         service.setDescription(dto.getDescription());
         service.setPicture(dto.getPicture());
 
-        service.setVeterinaryClinics(
-                veterinaryClinicRepository.findAllById(dto.getVeterinaryClinicIds())
-        );
+        if (dto.getVeterinaryClinicIds() != null && !dto.getVeterinaryClinicIds().isEmpty()) {
+            service.setVeterinaryClinics(
+                    veterinaryClinicRepository.findAllById(dto.getVeterinaryClinicIds())
+            );
+        } else {
+            service.setVeterinaryClinics(new ArrayList<>());
+        }
 
         return ServiceMapper.toDTO(serviceRepository.save(service));
     }

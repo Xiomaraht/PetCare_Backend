@@ -96,4 +96,8 @@ public class AuthController {
         
         return ResponseEntity.ok("Contraseña actualizada con éxito");
     }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        return ResponseEntity.ok("Sesión cerrada exitosamente");
+    }
 }

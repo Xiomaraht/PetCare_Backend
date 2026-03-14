@@ -27,8 +27,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
-        if (userDTO.getUsername() == null || userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-            throw new RuntimeException("El nombre de usuario ya existe o es inválido");
+        if (userDTO.getUsername() == null || userDTO.getUsername().trim().isEmpty()) {
+            throw new RuntimeException("El nombre de usuario es obligatorio");
+        }
+        
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            throw new RuntimeException("El nombre de usuario '" + userDTO.getUsername() + "' ya está en uso");
+        }
+
+        if (userDTO.getEmail() != null && userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            throw new RuntimeException("El correo electrónico '" + userDTO.getEmail() + "' ya está registrado");
         }
 
         User user = new User();

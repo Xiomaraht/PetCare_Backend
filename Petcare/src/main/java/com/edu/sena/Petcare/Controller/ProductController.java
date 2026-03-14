@@ -17,7 +17,7 @@ import com.edu.sena.Petcare.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 

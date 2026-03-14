@@ -35,11 +35,16 @@ public class CustomerServiceImpl implements CustomerService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuario no existe"));
 
-        Customer customer = new Customer();
+        // Buscar si ya existe un cliente para este usuario
+        Customer customer = customerRepository.findByUser_Id(dto.getUserId())
+                .orElse(new Customer());
+
         customer.setName((user.getFirstName() != null ? user.getFirstName() : "") + " " + (user.getLastName() != null ? user.getLastName() : ""));
         customer.setEmail(user.getEmail());
         customer.setPhone(dto.getPhone());
         customer.setAddress(dto.getAddress());
+        customer.setAddressDetail(dto.getAddressDetail());
+        customer.setBirthdate(dto.getBirthdate());
         customer.setDocumentNumber(dto.getDocumentNumber());
         customer.setUser(user);
 

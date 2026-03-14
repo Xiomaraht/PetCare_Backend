@@ -41,6 +41,11 @@ public class VeterinaryClinic {
     @ManyToMany(mappedBy = "veterinaryClinics")
     private List<Services> services;
 
+    //relacion OneToOne con User
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
     //relacion OneToMany con Bill
     @OneToMany(mappedBy = "veterinaryClinic")
     private List<Bill> facturas;

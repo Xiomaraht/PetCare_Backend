@@ -14,7 +14,7 @@ import com.edu.sena.Petcare.dto.CategoryDTO;
 import com.edu.sena.Petcare.service.CategoryService;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 

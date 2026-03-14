@@ -37,6 +37,13 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.actualizarCustomer(id, customerDTO));
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<CustomerDTO> getCustomerByUserId(@PathVariable Long userId) {
+        return customerService.obtenerCustomerPorUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.eliminarCustomer(id);

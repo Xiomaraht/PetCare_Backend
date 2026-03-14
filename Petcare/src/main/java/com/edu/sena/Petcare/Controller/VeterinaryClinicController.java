@@ -18,7 +18,7 @@ import com.edu.sena.Petcare.service.VeterinaryClinicService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/veterinary-clinics")
+@RequestMapping("/api/veterinary-clinics")
 @RequiredArgsConstructor
 public class VeterinaryClinicController {
 

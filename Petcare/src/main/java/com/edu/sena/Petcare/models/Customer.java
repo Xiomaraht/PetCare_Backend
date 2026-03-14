@@ -30,6 +30,9 @@ public class Customer {
     @Column(nullable = false)
     private String documentNumber;
 
+    private String birthdate;
+    private String addressDetail;
+
     @OneToOne
     @JoinColumn(name = "id_user")
     private User user;

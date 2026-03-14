@@ -17,10 +17,25 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
 
     public final VeterinaryClinicRepository veterinaryClinicRepository;
     public final VeterinaryClinicMapper veterinaryClinicMapper;
+    public final com.edu.sena.Petcare.repository.UserRepository userRepository;
+    public final com.edu.sena.Petcare.repository.DocumentTypeRepository documentTypeRepository;
 
     @Override
     public VeterinaryClinicDTO newVeterinaryClinic(VeterinaryClinicDTO veterinaryClinicDTO) {
         VeterinaryClinic veterinaryClinic = veterinaryClinicMapper.toEntity(veterinaryClinicDTO);
+        
+        if (veterinaryClinicDTO.getUserId() != null) {
+            com.edu.sena.Petcare.models.User user = userRepository.findById(veterinaryClinicDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + veterinaryClinicDTO.getUserId()));
+            veterinaryClinic.setUser(user);
+        }
+
+        if (veterinaryClinicDTO.getIdDocumentType() != null) {
+            com.edu.sena.Petcare.models.DocumentType docType = documentTypeRepository.findById(veterinaryClinicDTO.getIdDocumentType())
+                .orElseThrow(() -> new RuntimeException("Tipo de documento no encontrado con ID: " + veterinaryClinicDTO.getIdDocumentType()));
+            veterinaryClinic.setDocumentTypeVeterinary(docType);
+        }
+
         VeterinaryClinic veterinaryClinicGuardada = veterinaryClinicRepository.save(veterinaryClinic);
         return veterinaryClinicMapper.toDTO(veterinaryClinicGuardada);
     }

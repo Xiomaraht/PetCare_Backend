@@ -18,4 +18,7 @@ public class VeterinaryClinicDTO {
 
     private String documentNumber;
 
+    private Long userId;
+    private Long idDocumentType;
+
 }
