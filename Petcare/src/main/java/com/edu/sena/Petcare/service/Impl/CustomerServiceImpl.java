@@ -119,4 +119,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return dto;
     }
+
+    @Override
+    public List<CustomerDTO> obtenerClientesPorClinica(Long clinicId) {
+        return customerRepository.findCustomersByClinicId(clinicId).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 }

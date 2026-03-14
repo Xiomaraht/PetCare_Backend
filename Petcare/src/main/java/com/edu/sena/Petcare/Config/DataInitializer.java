@@ -19,6 +19,7 @@ public class DataInitializer implements CommandLineRunner {
     private final NeighborhoodRepository neighborhoodRepository;
     private final SpecieRepository specieRepository;
     private final RaceRepository raceRepository;
+    private final SubscriptionPlanRepository subscriptionPlanRepository;
 
     @Override
     public void run(String... args) {
@@ -117,6 +118,38 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(admin);
 
             System.out.println("ADMIN creado: admin / admin123");
+        }
+
+        // --- Subscription Plans ---
+        if (subscriptionPlanRepository.count() == 0) {
+            SubscriptionPlan basic = SubscriptionPlan.builder()
+                .name("Plan Básico")
+                .price(29.99)
+                .durationDays(30)
+                .description("Acceso esencial para gestión de citas y productos.")
+                .active(true)
+                .build();
+            
+            SubscriptionPlan pro = SubscriptionPlan.builder()
+                .name("Plan Profesional")
+                .price(59.99)
+                .durationDays(30)
+                .description("Gestión completa con analíticas y reportes avanzados.")
+                .active(true)
+                .build();
+            
+            SubscriptionPlan premium = SubscriptionPlan.builder()
+                .name("Plan Premium")
+                .price(499.99)
+                .durationDays(365)
+                .description("Suscripción anual con todos los beneficios y soporte prioritario.")
+                .active(true)
+                .build();
+
+            subscriptionPlanRepository.save(basic);
+            subscriptionPlanRepository.save(pro);
+            subscriptionPlanRepository.save(premium);
+            System.out.println("Planes de suscripción inicializados.");
         }
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.edu.sena.Petcare.models.Bill;
 
 @Repository
-public interface BillRepository extends JpaRepository <Bill, Long>{
-
+public interface BillRepository extends JpaRepository<Bill, Long> {
+    java.util.List<Bill> findByVeterinaryClinicId(Long clinicId);
 }

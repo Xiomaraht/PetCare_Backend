@@ -102,4 +102,11 @@ public class PetServiceImpl implements PetService {
                 .map(PetMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PetDTO> findPetsByClinicId(Long clinicId) {
+        return petRepository.findPetsByClinicId(clinicId).stream()
+                .map(PetMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
