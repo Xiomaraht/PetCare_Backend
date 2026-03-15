@@ -37,6 +37,7 @@ public class ClinicSubscription extends AbstractAuditingEntity {
 
     private String paymentReference;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean autoRenew = false;
 }

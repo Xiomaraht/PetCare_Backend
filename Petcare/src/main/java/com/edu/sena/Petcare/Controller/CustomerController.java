@@ -44,6 +44,11 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/clinic/{clinicId}")
+    public ResponseEntity<List<CustomerDTO>> getCustomersByClinic(@PathVariable Long clinicId) {
+        return ResponseEntity.ok(customerService.obtenerClientesPorClinica(clinicId));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.eliminarCustomer(id);

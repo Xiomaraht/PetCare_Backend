@@ -25,4 +25,6 @@ public interface CustomerService {
 
     //Nuevo metodo para obtener el customer por el userId
     Optional<CustomerDTO> obtenerCustomerPorUserId(Long userId);
+
+    List<CustomerDTO> obtenerClientesPorClinica(Long clinicId);
 }

@@ -47,6 +47,11 @@ public class PetController {
         return petService.findByCustomerId(customerId);
     }
 
+    @GetMapping("/clinic/{clinicId}")
+    public List<PetDTO> getPetsByClinic(@PathVariable Long clinicId) {
+        return petService.findPetsByClinicId(clinicId);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         petService.delete(id);

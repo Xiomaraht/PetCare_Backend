@@ -11,7 +11,10 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
+@lombok.RequiredArgsConstructor
 public class JwtService {
+
+    private final com.edu.sena.Petcare.repository.VeterinaryClinicRepository clinicRepository;
 
     private Key getSecretKey() {
         String secret = "petcare_secret_key_petcare_secret_key_petcare_123456789"; // Must be strong
@@ -26,11 +29,19 @@ public class JwtService {
 
         String role = user.getAuthority() != null ? user.getAuthority().getName() : "USER";
 
-        return Jwts.builder()
+        io.jsonwebtoken.JwtBuilder builder = Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("id", user.getId())
                 .claim("nombreCompleto", fullName.trim())
-                .claim("rol", role)
+                .claim("rol", role);
+
+        if ("ROLE_VETERINARIAN".equals(role)) {
+            clinicRepository.findByUser_Id(user.getId()).ifPresent(clinic -> {
+                builder.claim("clinicId", clinic.getId());
+            });
+        }
+
+        return builder
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)

@@ -28,6 +28,7 @@ public class SubscriptionPlan {
     @Column(length = 1000)
     private String description;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean active = true;
 }
