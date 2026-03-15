@@ -94,7 +94,8 @@ public class DataInitializer implements CommandLineRunner {
                 "Yorkshire Terrier", "Chihuahua", "Beagle", "Boxer", "Husky Siberiano",
                 "Shih Tzu", "Pinscher", "Pug", "Rottweiler", "Border Collie", 
                 "Greyhound", "Dálmata", "Cocker Spaniel", "Doberman", "San Bernardo",
-                "Schnauzer", "Bichón Maltés", "Gran Danés", "Chow Chow", "Akita"
+                "Schnauzer", "Bichón Maltés", "Gran Danés", "Chow Chow", "Akita",
+                "Boston Terrier", "French Bulldog", "Bernese Mountain Dog", "Shiba Inu", "Basset Hound"
             };
             for (String r : razasPerro) {
                 Race race = new Race();
@@ -104,7 +105,11 @@ public class DataInitializer implements CommandLineRunner {
             }
 
             // Razas Gato
-            String[] razasGato = {"Persa", "Maine Coon", "Siamés", "Bengalí", "Sphynx", "Ragdoll", "Abisinio", "Birmano", "Ruso Azul", "Angora"};
+            String[] razasGato = {
+                "Persa", "Maine Coon", "Siamés", "Bengalí", "Sphynx", 
+                "Ragdoll", "Abisinio", "Birmano", "Ruso Azul", "Angora",
+                "British Shorthair", "Scottish Fold", "Siamese", "Burmese", "Chartreux"
+            };
             for (String r : razasGato) {
                 Race race = new Race();
                 race.setName(r);
