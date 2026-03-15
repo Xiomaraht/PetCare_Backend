@@ -20,6 +20,7 @@ public class DataInitializer implements CommandLineRunner {
     private final SpecieRepository specieRepository;
     private final RaceRepository raceRepository;
     private final SubscriptionPlanRepository subscriptionPlanRepository;
+    private final VeterinaryClinicRepository veterinaryClinicRepository;
 
     @Override
     public void run(String... args) {
@@ -161,6 +162,36 @@ public class DataInitializer implements CommandLineRunner {
             subscriptionPlanRepository.save(pro);
             subscriptionPlanRepository.save(premium);
             System.out.println("Planes de suscripción inicializados.");
+        }
+
+        // --- Default Clinic "Petitos" ---
+        if (veterinaryClinicRepository.count() == 0) {
+             // Create a veterinarian user first if needed
+             if (userRepository.findByUsername("petitos_admin").isEmpty()) {
+                 User vetAdmin = User.builder()
+                     .username("petitos_admin")
+                     .password(passwordEncoder.encode("petitos123"))
+                     .authority(authorityRepository.findByName("ROLE_VETERINARIAN").get())
+                     .firstName("Admin")
+                     .lastName("Petitos")
+                     .email("contacto@petitos.com")
+                     .build();
+                 vetAdmin = userRepository.save(vetAdmin);
+
+                 VeterinaryClinic petitos = new VeterinaryClinic();
+                 petitos.setName("Petitos");
+                 petitos.setNit("900.123.456-7");
+                 petitos.setAddress("Calle 123 # 45-67");
+                 petitos.setPhone("3001234567");
+                 petitos.setEmail("contacto@petitos.com");
+                 petitos.setDocumentNumber("9001234567");
+                 petitos.setStatus("APPROVED");
+                 petitos.setUser(vetAdmin);
+                 petitos.setDocumentTypeVeterinary(documentTypeRepository.findByAbreviation("NIT").get());
+                 
+                 veterinaryClinicRepository.save(petitos);
+                 System.out.println("CLINICA 'Petitos' creada: petitos_admin / petitos123");
+             }
         }
     }
 }
