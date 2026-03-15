@@ -89,7 +89,13 @@ public class DataInitializer implements CommandLineRunner {
             gato = specieRepository.save(gato);
 
             // Razas Perro
-            String[] razasPerro = {"Labrador", "Golden Retriever", "Poodle", "Bulldog", "Pastor Alemán", "Yorkshire Terrier", "Chihuahua", "Beagle", "Boxer", "Husky Siberiano"};
+            String[] razasPerro = {
+                "Labrador", "Golden Retriever", "Poodle", "Bulldog", "Pastor Alemán", 
+                "Yorkshire Terrier", "Chihuahua", "Beagle", "Boxer", "Husky Siberiano",
+                "Shih Tzu", "Pinscher", "Pug", "Rottweiler", "Border Collie", 
+                "Greyhound", "Dálmata", "Cocker Spaniel", "Doberman", "San Bernardo",
+                "Schnauzer", "Bichón Maltés", "Gran Danés", "Chow Chow", "Akita"
+            };
             for (String r : razasPerro) {
                 Race race = new Race();
                 race.setName(r);

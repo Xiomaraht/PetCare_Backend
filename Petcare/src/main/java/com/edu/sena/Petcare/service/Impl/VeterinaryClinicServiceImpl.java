@@ -31,10 +31,15 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
         }
 
         VeterinaryClinic veterinaryClinic = new VeterinaryClinic();
+        veterinaryClinic.setName(veterinaryClinicDTO.getName());
+        veterinaryClinic.setNit(veterinaryClinicDTO.getNit());
         veterinaryClinic.setAddress(veterinaryClinicDTO.getAddress());
         veterinaryClinic.setPhone(veterinaryClinicDTO.getPhone());
         veterinaryClinic.setEmail(veterinaryClinicDTO.getEmail());
         veterinaryClinic.setDocumentNumber(veterinaryClinicDTO.getDocumentNumber());
+        veterinaryClinic.setDescription(veterinaryClinicDTO.getDescription());
+        veterinaryClinic.setOpeningHours(veterinaryClinicDTO.getOpeningHours());
+        veterinaryClinic.setStatus(veterinaryClinicDTO.getStatus() != null ? veterinaryClinicDTO.getStatus() : "APPROVED"); // Default to APPROVED
         
         if (veterinaryClinicDTO.getUserId() != null) {
             com.edu.sena.Petcare.models.User user = userRepository.findById(veterinaryClinicDTO.getUserId())
@@ -65,7 +70,7 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
 
     @Override
     public List<VeterinaryClinicDTO> getAllVeterinaryClinics() {
-        return veterinaryClinicRepository.findAll().stream()
+        return veterinaryClinicRepository.findByStatus("APPROVED").stream()
             .map(vc -> {
                 VeterinaryClinicDTO dto = veterinaryClinicMapper.toDTO(vc);
                 if (vc.getUser() != null) {

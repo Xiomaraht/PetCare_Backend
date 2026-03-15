@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface VeterinaryClinicRepository extends JpaRepository<VeterinaryClinic, Long>{
     Optional<VeterinaryClinic> findByUser_Id(Long userId);
+    java.util.List<VeterinaryClinic> findByStatus(String status);
 }

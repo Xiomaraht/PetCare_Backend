@@ -20,6 +20,12 @@ public class VeterinaryClinic {
     private Long id;
 
     @Column(nullable = false, length = 255)
+    private String name;
+
+    @Column(nullable = false, length = 50)
+    private String nit;
+
+    @Column(nullable = false, length = 255)
     private String address;
 
     @Column(nullable = false, length = 20)
@@ -30,6 +36,15 @@ public class VeterinaryClinic {
 
     @Column(name = "document_number", nullable = false, length = 100)
     private String documentNumber;
+
+    @Column(length = 1000)
+    private String description;
+
+    @Column(length = 255)
+    private String openingHours;
+
+    @Column(nullable = false, length = 20)
+    private String status = "APPROVED"; // Default to APPROVED for now as requested
 
 
     //relacion OneToMany con VeterinaryClinic
