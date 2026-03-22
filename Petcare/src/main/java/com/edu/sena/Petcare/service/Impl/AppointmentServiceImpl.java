@@ -48,6 +48,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> findByPetId(Long petId) {
+        return appointmentRepository.findByPetId(petId);
+    }
+
+    @Override
     public void delete(Long id) {
         appointmentRepository.deleteById(id);
     }

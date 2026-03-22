@@ -9,4 +9,5 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findByCustomerId(Long customerId);
     List<Appointment> findByVeterinaryClinicId(Long clinicId);
+    List<Appointment> findByPetId(Long petId);
 }

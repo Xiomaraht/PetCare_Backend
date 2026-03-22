@@ -73,8 +73,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException exception) {
+        String msg = exception.getMessage() != null ? exception.getMessage().toLowerCase() : "";
+        String responseMessage = "Conflicto con datos existentes. Un valor único ya está registrado en el sistema.";
+        if (msg.contains("duplicate") || msg.contains("unique")) {
+            if (msg.contains("nit")) {
+                responseMessage = "El NIT ya está registrado.";
+            } else if (msg.contains("usuario") || msg.contains("user")) {
+                responseMessage = "El Usuario ya está registrado.";
+            } else if (msg.contains("microchip")) {
+                responseMessage = "El Microchip ingresado ya se encuentra registrado para otra mascota.";
+            }
+        } else if (msg.contains("cannot be null") || msg.contains("null")) {
+            responseMessage = "Un campo obligatorio está vacío. Por favor revise los datos enviados.";
+        }
+
         ErrorResponse errorResponse = new ErrorResponse(
-            "Conflict con datos existentes: El NIT o el Usuario ya están registrados.",
+            responseMessage,
             HttpStatus.CONFLICT.value(), 
             "Violación de restricción de integridad de base de datos");
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);

@@ -42,4 +42,8 @@ public class Appointment extends AbstractAuditingEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private Services service;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 }

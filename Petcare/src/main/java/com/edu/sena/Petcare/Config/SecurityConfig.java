@@ -63,11 +63,13 @@ public class SecurityConfig {
                                 "/api/neighborhoods", "/api/neighborhoods/**",
                                 "/api/veterinary-clinics", "/api/veterinary-clinics/**",
                                 "/api/products/**", "/api/services/**",
+                                "/pets/cleanup", "/pets/debug", "/pets/purge",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/error")
                         .permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/pets/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**", "/api/services/**").authenticated()
                         .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/products/**", "/api/services/**").authenticated()
                         .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**", "/api/services/**").authenticated()

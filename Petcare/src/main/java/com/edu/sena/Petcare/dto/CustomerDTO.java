@@ -12,6 +12,9 @@ public class CustomerDTO {
     private String email;
     private String phone;
     private String address;
+    private String documentNumber;
+    private String birthdate;
+    private String addressDetail;
     private Long userId;
     private String picture;
 }

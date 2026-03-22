@@ -11,6 +11,7 @@ import com.edu.sena.Petcare.mapper.PetMapper;
 import com.edu.sena.Petcare.models.Customer;
 import com.edu.sena.Petcare.models.Pet;
 import com.edu.sena.Petcare.models.Race;
+import com.edu.sena.Petcare.exception.DuplicateResourceException;
 import com.edu.sena.Petcare.exception.ResourceNotFoundException;
 import com.edu.sena.Petcare.repository.CustomerRepository;
 import com.edu.sena.Petcare.repository.PetRepository;
@@ -18,9 +19,11 @@ import com.edu.sena.Petcare.repository.RaceRepository;
 import com.edu.sena.Petcare.service.PetService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
@@ -29,6 +32,14 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public PetDTO register(PetRegistrationDTO dto) {
+        log.info("Registrando mascota con microchip: '{}'", dto.getMicrochip());
+        
+        // Asegurar que si viene vacío o solo espacios, sea NULL para evitar conflictos en la BD
+        if (dto.getMicrochip() != null && dto.getMicrochip().trim().isEmpty()) {
+            dto.setMicrochip(null);
+            log.info("Microchip vacío detectado, se ha seteado a NULL");
+        }
+
         Pet pet = PetMapper.toEntity(dto);
 
         Race race = raceRepository.findById(dto.getRaceId())
@@ -39,6 +50,11 @@ public class PetServiceImpl implements PetService {
 
         pet.setRaza(race);
         pet.setCustomer(customer);
+        
+        // Asegurar que el status no sea null
+        if (pet.getStatus() == null) {
+            pet.setStatus(true);
+        }
 
         return PetMapper.toDTO(petRepository.save(pet));
     }
@@ -107,6 +123,26 @@ public class PetServiceImpl implements PetService {
     public List<PetDTO> findPetsByClinicId(Long clinicId) {
         return petRepository.findPetsByClinicId(clinicId).stream()
                 .map(PetMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void cleanupFailedRegistrations() {
+        log.warn("Iniciando purga de mascotas con microchip vacío o nulo...");
+        petRepository.deletePetsWithNoMicrochip();
+        log.info("Purga completada.");
+    }
+
+    @Override
+    public List<PetDTO> findAllDetailed() {
+        return petRepository.findAll().stream()
+                .map(pet -> {
+                    PetDTO dto = PetMapper.toDTO(pet);
+                    // Asegurar que vemos el microchip exacto en el log
+                    log.info("Mascota en DB: ID={}, Nombre={}, Microchip='{}'", pet.getId(), pet.getName(), pet.getMicrochip());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 }

@@ -34,6 +34,11 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.findByClinicId(id));
     }
 
+    @GetMapping("/pet/{id}")
+    public ResponseEntity<List<Appointment>> findByPet(@PathVariable Long id) {
+        return ResponseEntity.ok(appointmentService.findByPetId(id));
+    }
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<Appointment> updateStatus(@PathVariable Long id, @RequestParam String status) {
         return ResponseEntity.ok(appointmentService.updateStatus(id, status));

@@ -25,4 +25,8 @@ public interface PetService {
     List<PetDTO> findPetsByClinicId(Long clinicId);
 
     void delete(Long id);
+
+    void cleanupFailedRegistrations();
+
+    List<PetDTO> findAllDetailed();
 }

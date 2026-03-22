@@ -87,6 +87,9 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(dto.getEmail());
         customer.setPhone(dto.getPhone());
         customer.setAddress(dto.getAddress());
+        customer.setAddressDetail(dto.getAddressDetail());
+        customer.setBirthdate(dto.getBirthdate());
+        customer.setDocumentNumber(dto.getDocumentNumber());
 
         return mapToDTO(customerRepository.save(customer));
     }
@@ -113,6 +116,10 @@ public class CustomerServiceImpl implements CustomerService {
         dto.setEmail(customer.getEmail());
         dto.setPhone(customer.getPhone());
         dto.setAddress(customer.getAddress());
+        dto.setAddressDetail(customer.getAddressDetail());
+        dto.setDocumentNumber(customer.getDocumentNumber());
+        dto.setBirthdate(customer.getBirthdate());
+        
         if (customer.getUser() != null) {
             dto.setUserId(customer.getUser().getId());
             dto.setPicture(customer.getUser().getPicture());
