@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface AppointmentService {
     Appointment create(Appointment appointment);
+    Appointment createFromDto(com.edu.sena.Petcare.dto.AppointmentRegistrationDTO dto);
     List<Appointment> findAll();
     List<Appointment> findByCustomerId(Long customerId);
     List<Appointment> findByClinicId(Long clinicId);

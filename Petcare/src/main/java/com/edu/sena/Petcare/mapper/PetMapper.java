@@ -36,10 +36,15 @@ public class PetMapper {
 
         if (pet.getRaza() != null) { 
             dto.setRaceId(pet.getRaza().getId());
+            dto.setRaceName(pet.getRaza().getName());
+            if (pet.getRaza().getEspecie() != null) {
+                dto.setSpecieName(pet.getRaza().getEspecie().getName());
+            }
         }
 
         if (pet.getCustomer() != null) { 
             dto.setCustomerId(pet.getCustomer().getId());
+            dto.setCustomerName(pet.getCustomer().getName());
         }
         
         return dto;

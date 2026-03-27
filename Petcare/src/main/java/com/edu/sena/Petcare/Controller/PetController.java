@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("pets")
+@RequestMapping("/api/pets")
 @RequiredArgsConstructor
 public class PetController {
 
@@ -63,6 +63,7 @@ public class PetController {
         return petService.update(id, dto);
     }
 
+/* 
     @GetMapping("/cleanup")
     public String cleanup() {
         petService.cleanupFailedRegistrations();
@@ -80,4 +81,5 @@ public class PetController {
         petService.findAllDetailed().forEach(p -> petService.delete(p.getId()));
         return "Purge completed. All pets have been removed.";
     }
+*/
 }

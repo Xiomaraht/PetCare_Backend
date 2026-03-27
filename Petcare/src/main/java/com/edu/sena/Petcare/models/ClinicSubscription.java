@@ -2,6 +2,7 @@ package com.edu.sena.Petcare.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class ClinicSubscription extends AbstractAuditingEntity {
 
     @Id

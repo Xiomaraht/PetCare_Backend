@@ -21,6 +21,10 @@ public class DataInitializer implements CommandLineRunner {
     private final RaceRepository raceRepository;
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final VeterinaryClinicRepository veterinaryClinicRepository;
+    private final CustomerRepository customerRepository;
+    private final PetRepository petRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) {
@@ -193,5 +197,103 @@ public class DataInitializer implements CommandLineRunner {
                  System.out.println("CLINICA 'Petitos' creada: petitos_admin / petitos123");
              }
         }
+
+        // --- Asegurar credenciales y datos de prueba ---
+        userRepository.findByUsername("petitos_admin").ifPresent(u -> {
+             u.setUsername("petitos");
+             u.setPassword(passwordEncoder.encode("admin123"));
+             userRepository.save(u);
+        });
+
+        userRepository.findByUsername("petitos").ifPresent(u -> {
+             u.setPassword(passwordEncoder.encode("admin123"));
+             userRepository.save(u);
+        });
+
+        User userPrueba = userRepository.findByUsername("prueba").orElseGet(() -> {
+            User newUser = User.builder()
+                .username("prueba")
+                .password(passwordEncoder.encode("admin123"))
+                .authority(authorityRepository.findByName("ROLE_CUSTOMER").get())
+                .firstName("Usuario")
+                .lastName("Prueba")
+                .email("prueba@correo.com")
+                .build();
+            return userRepository.save(newUser);
+        });
+        
+        userPrueba.setPassword(passwordEncoder.encode("admin123"));
+        userRepository.save(userPrueba);
+
+        Customer customerPrueba = customerRepository.findAll().stream()
+            .filter(c -> c.getUser() != null && c.getUser().getId().equals(userPrueba.getId()))
+            .findFirst().orElseGet(() -> {
+                Customer c = new Customer();
+                c.setName("Usuario Prueba");
+                c.setEmail("prueba@correo.com");
+                c.setDocumentNumber("123456789");
+                c.setUser(userPrueba);
+                return customerRepository.save(c);
+            });
+
+        // Buscar la mascota de prueba (Milo u otra existente)
+        Pet milo = petRepository.findAll().stream()
+            .filter(p -> p.getCustomer() != null && p.getCustomer().getId().equals(customerPrueba.getId()))
+            .findFirst().orElseGet(() -> {
+                Pet pet = new Pet();
+                pet.setName("Milo");
+                pet.setBirthdate(java.time.LocalDate.of(2020, 1, 1));
+                pet.setColor("Dorado");
+                pet.setGender("Macho");
+                pet.setWeight("15kg");
+                pet.setCustomer(customerPrueba);
+                if (raceRepository.count() > 0) {
+                    pet.setRaza(raceRepository.findAll().get(0));
+                }
+                System.out.println("Mascota 'Milo' creada para el usuario 'prueba'.");
+                return petRepository.save(pet);
+            });
+
+        VeterinaryClinic petitosClinic = veterinaryClinicRepository.findAll().stream()
+            .filter(v -> v.getUser() != null && v.getUser().getUsername().equals("petitos"))
+            .findFirst().orElse(null);
+        
+        // CLEANUP: Aprobar todas las veterinarias antiguas que no tenian status para que aparezcan en la App
+        veterinaryClinicRepository.findAll().forEach(vc -> {
+            if (vc.getStatus() == null || vc.getStatus().trim().isEmpty()) {
+                vc.setStatus("APPROVED");
+                veterinaryClinicRepository.save(vc);
+                System.out.println("Clinica " + vc.getName() + " auto-aprobada para visibilidad.");
+            }
+        });
+
+        // CLEANUP: Eliminar citas de prueba que quedaron atascadas en la base de datos (Ej: Milo)
+        appointmentRepository.findAll().forEach(app -> {
+            if (app.getReason() != null && app.getReason().contains("Milo")) {
+                appointmentRepository.delete(app);
+                System.out.println("Cita de prueba eliminada para reiniciar el proceso naturalmente.");
+            }
+        });
+
+        // --- Categories ---
+        if (categoryRepository.count() == 0) {
+            String[][] categories = {
+                {"Comida para Mascotas", "Alimentos, snacks y dietas especiales."},
+                {"Juguetes", "Diversión y entretenimiento para mascotas."},
+                {"Camas y Descanso", "Camas, cobijas y accesorios para el hogar."},
+                {"Medicamentos", "Productos farmacéuticos y suplementos."},
+                {"Higiene y Cuidado", "Shampoo, cepillos y limpieza."},
+                {"Accesorios", "Collares, correas y ropa."}
+            };
+            for (String[] c : categories) {
+                Category cat = new Category();
+                cat.setName(c[0]);
+                cat.setDescription(c[1]);
+                categoryRepository.save(cat);
+            }
+            System.out.println("Categorías de productos inicializadas.");
+        }
+
+        // La cita automatica ha sido retirada a peticion del usuario para probar el flujo natural.
     }
 }

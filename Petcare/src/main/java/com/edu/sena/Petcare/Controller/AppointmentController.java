@@ -15,8 +15,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Appointment> create(@RequestBody Appointment appointment) {
-        return ResponseEntity.ok(appointmentService.create(appointment));
+    public ResponseEntity<Appointment> create(@RequestBody com.edu.sena.Petcare.dto.AppointmentRegistrationDTO appointmentDto) {
+        return ResponseEntity.ok(appointmentService.createFromDto(appointmentDto));
     }
 
     @GetMapping

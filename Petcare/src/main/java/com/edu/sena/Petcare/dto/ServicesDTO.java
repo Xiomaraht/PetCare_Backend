@@ -20,5 +20,5 @@ public class ServicesDTO {
 
     private String picture;
 
-    private List<String> veterinaryClinics; 
+    private List<VeterinaryClinicDTO> veterinaryClinics; 
 }

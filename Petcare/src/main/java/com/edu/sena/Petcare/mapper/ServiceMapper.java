@@ -20,13 +20,22 @@ public class ServiceMapper {
         dto.setStatus(service.getStatus());
         
         if (service.getVeterinaryClinics() != null) {
-            
             dto.setVeterinaryClinics(
                     service.getVeterinaryClinics()
                             .stream()
-
                             .filter(clinic -> clinic != null)
-                            .map(clinic -> clinic.getDocumentNumber() != null ? clinic.getDocumentNumber() : "S/N") 
+                            .map(clinic -> {
+                                VeterinaryClinicDTO clinicDto = new VeterinaryClinicDTO();
+                                clinicDto.setId(clinic.getId());
+                                clinicDto.setName(clinic.getName());
+                                clinicDto.setNit(clinic.getNit());
+                                clinicDto.setAddress(clinic.getAddress());
+                                clinicDto.setPhone(clinic.getPhone());
+                                clinicDto.setEmail(clinic.getEmail());
+                                clinicDto.setDocumentNumber(clinic.getDocumentNumber());
+                                clinicDto.setPicture(clinic.getPicture());
+                                return clinicDto;
+                            }) 
                             .collect(Collectors.toList())
             );
         } else {

@@ -20,5 +20,8 @@ public class PetDTO {
     
     private Boolean status; 
     private Long raceId;
+    private String raceName;
+    private String specieName;
     private Long customerId; 
+    private String customerName;
 }

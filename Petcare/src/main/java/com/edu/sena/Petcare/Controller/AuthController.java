@@ -24,15 +24,21 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final EmailService emailService;
+    private final com.edu.sena.Petcare.repository.CustomerRepository customerRepository;
+    private final com.edu.sena.Petcare.repository.VeterinaryClinicRepository clinicRepository;
 
     public AuthController(UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
-            EmailService emailService) {
+            EmailService emailService,
+            com.edu.sena.Petcare.repository.CustomerRepository customerRepository,
+            com.edu.sena.Petcare.repository.VeterinaryClinicRepository clinicRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.emailService = emailService;
+        this.customerRepository = customerRepository;
+        this.clinicRepository = clinicRepository;
     }
 
     @PostMapping("/login")
@@ -51,6 +57,13 @@ public class AuthController {
         respuesta.setNombreCompleto((user.getFirstName() != null ? user.getFirstName() : "") + " "
                 + (user.getLastName() != null ? user.getLastName() : ""));
         respuesta.setRol(user.getAuthority() != null ? user.getAuthority().getName() : "USER");
+        respuesta.setUserId(user.getId());
+
+        if ("ROLE_CUSTOMER".equals(respuesta.getRol())) {
+            customerRepository.findByUser_Id(user.getId()).ifPresent(c -> respuesta.setCustomerId(c.getId()));
+        } else if ("ROLE_VETERINARIAN".equals(respuesta.getRol())) {
+            clinicRepository.findByUser_Id(user.getId()).ifPresent(v -> respuesta.setClinicId(v.getId()));
+        }
 
         return ResponseEntity.ok(respuesta);
     }

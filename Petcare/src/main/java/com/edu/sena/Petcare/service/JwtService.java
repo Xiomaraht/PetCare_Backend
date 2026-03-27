@@ -15,6 +15,7 @@ import java.util.Date;
 public class JwtService {
 
     private final com.edu.sena.Petcare.repository.VeterinaryClinicRepository clinicRepository;
+    private final com.edu.sena.Petcare.repository.CustomerRepository customerRepository;
 
     private Key getSecretKey() {
         String secret = "petcare_secret_key_petcare_secret_key_petcare_123456789"; // Must be strong
@@ -35,9 +36,15 @@ public class JwtService {
                 .claim("nombreCompleto", fullName.trim())
                 .claim("rol", role);
 
-        if ("ROLE_VETERINARIAN".equals(role)) {
+        if ("ROLE_VETERINARIAN".equals(role) || "VETERINARIO".equals(role)) {
             clinicRepository.findByUser_Id(user.getId()).ifPresent(clinic -> {
                 builder.claim("clinicId", clinic.getId());
+            });
+        }
+
+        if ("ROLE_CUSTOMER".equals(role) || "USER".equals(role)) {
+            customerRepository.findByUser_Id(user.getId()).ifPresent(customer -> {
+                builder.claim("customerId", customer.getId());
             });
         }
 

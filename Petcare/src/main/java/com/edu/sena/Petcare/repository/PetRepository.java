@@ -17,7 +17,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     boolean existsByMicrochip(String microchip);
 
-    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT p FROM Pet p JOIN Appointment a ON a.customer.id = p.customer.id WHERE a.veterinaryClinic.id = :clinicId")
+    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT a.pet FROM Appointment a WHERE a.veterinaryClinic.id = :clinicId")
     java.util.List<Pet> findPetsByClinicId(@org.springframework.data.repository.query.Param("clinicId") Long clinicId);
 
     void deleteByMicrochip(String microchip);

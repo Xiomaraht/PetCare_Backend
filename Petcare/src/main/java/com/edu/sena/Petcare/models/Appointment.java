@@ -2,6 +2,7 @@ package com.edu.sena.Petcare.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -9,7 +10,7 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "appointments")
 public class Appointment extends AbstractAuditingEntity {
