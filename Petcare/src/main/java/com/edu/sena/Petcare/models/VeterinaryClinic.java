@@ -46,6 +46,9 @@ public class VeterinaryClinic {
     @Column(nullable = false, length = 20)
     private String status = "APPROVED"; // Default to APPROVED for now as requested
 
+    @Column(columnDefinition = "TEXT")
+    private String picture;
+
 
     //relacion OneToMany con VeterinaryClinic
     @ManyToOne
