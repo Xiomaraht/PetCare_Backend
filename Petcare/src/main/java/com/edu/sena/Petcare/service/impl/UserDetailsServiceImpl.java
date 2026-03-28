@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.service.Impl;
+package com.edu.sena.Petcare.service.impl;
 
 import com.edu.sena.Petcare.models.User;
 import com.edu.sena.Petcare.repository.UserRepository;

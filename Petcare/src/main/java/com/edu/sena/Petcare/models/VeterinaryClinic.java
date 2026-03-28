@@ -2,6 +2,8 @@ package com.edu.sena.Petcare.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +15,7 @@ import lombok.*;
 @Table( name = "veterinary_clinic",
         uniqueConstraints = @UniqueConstraint(name = "uk_veterinary",  columnNames = {"id_document_type", "document_number"})
 )
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class VeterinaryClinic {
     @EqualsAndHashCode.Include
     @Id
@@ -50,25 +53,27 @@ public class VeterinaryClinic {
     private String picture;
 
 
-    //relacion OneToMany con VeterinaryClinic
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_document_type")
     private DocumentType documentTypeVeterinary;
 
-    //relacion ManyToMany con Services
+    @JsonIgnore
     @ManyToMany(mappedBy = "veterinaryClinics")
     private List<Services> services;
 
-    //relacion OneToOne con User
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
     //relacion OneToMany con Bill
+    @JsonIgnore
     @OneToMany(mappedBy = "veterinaryClinic")
     private List<Bill> facturas;
 
     //relacion OneToMany con Product
+    @JsonIgnore
     @OneToMany(mappedBy = "veterinaryClinic")
     private List<Product> products;
 }

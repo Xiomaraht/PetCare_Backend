@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.service.Impl;
+package com.edu.sena.Petcare.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors; // IMPORTACIÓN CLAVE AÑADIDA
@@ -11,7 +11,6 @@ import com.edu.sena.Petcare.mapper.PetMapper;
 import com.edu.sena.Petcare.models.Customer;
 import com.edu.sena.Petcare.models.Pet;
 import com.edu.sena.Petcare.models.Race;
-import com.edu.sena.Petcare.exception.DuplicateResourceException;
 import com.edu.sena.Petcare.exception.ResourceNotFoundException;
 import com.edu.sena.Petcare.repository.CustomerRepository;
 import com.edu.sena.Petcare.repository.PetRepository;

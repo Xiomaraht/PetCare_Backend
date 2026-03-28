@@ -1,5 +1,7 @@
 package com.edu.sena.Petcare.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User extends AbstractAuditingEntity {
 
     @Id
@@ -47,6 +50,7 @@ public class User extends AbstractAuditingEntity {
     @Column(name = "picture")
     private String picture;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Token> tokens;
 }

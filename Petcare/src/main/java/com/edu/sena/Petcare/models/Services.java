@@ -1,5 +1,7 @@
 package com.edu.sena.Petcare.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -11,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "services")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Services {
     @EqualsAndHashCode.Include
     @Id
@@ -30,6 +33,7 @@ public class Services {
     private String picture;
 
     //relacion de ManyToMany con VeterinaryClinic
+    @JsonIgnore
     @ManyToMany 
     @JoinTable( name = "service_clinic",
                 joinColumns = @JoinColumn(name = "id_service"),

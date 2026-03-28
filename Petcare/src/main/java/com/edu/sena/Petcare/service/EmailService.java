@@ -18,10 +18,14 @@ public class EmailService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(toEmail);
             message.setSubject("PetCare - Recuperación de Contraseña");
-            message.setText("Hola,\n\nHas solicitado restablecer tu contraseña.\n" +
-                    "Por favor utiliza el siguiente código o token para cambiar tu contraseña:\n\n" +
-                    resetToken + "\n\n" +
-                    "Si no fuiste tú, ignora este mensaje.");
+            message.setText("Hola,\n\n" +
+                    "Has solicitado restablecer tu contraseña en PetCare.\n\n" +
+                    "Por favor, utiliza el siguiente código para cambiar tu contraseña:\n\n" +
+                    "   " + resetToken + "\n\n" +
+                    "Este código expirará en 1 hora.\n\n" +
+                    "Si no realizaste esta solicitud, puedes ignorar este correo de forma segura.\n\n" +
+                    "Atentamente,\n" +
+                    "El equipo de PetCare.");
 
             mailSender.send(message);
             System.out.println("Email enviado exitosamente a: " + toEmail);

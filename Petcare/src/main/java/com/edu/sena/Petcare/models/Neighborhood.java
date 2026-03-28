@@ -1,5 +1,7 @@
 package com.edu.sena.Petcare.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -11,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "neighborhood")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Neighborhood {
     @EqualsAndHashCode.Include
     @Id
@@ -26,6 +29,7 @@ public class Neighborhood {
     private Locality locality;
 
     //relacion OneToMany con Customer
+    @JsonIgnore
     @OneToMany(mappedBy = "barrioCliente")
     private List<Customer> clientes;
 }

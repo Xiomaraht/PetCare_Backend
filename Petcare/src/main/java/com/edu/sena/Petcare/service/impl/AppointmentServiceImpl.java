@@ -1,15 +1,19 @@
-package com.edu.sena.Petcare.service.Impl;
+package com.edu.sena.Petcare.service.impl;
 
-import com.edu.sena.Petcare.service.AppointmentService;
-
+import com.edu.sena.Petcare.dto.AppointmentDTO;
+import com.edu.sena.Petcare.mapper.AppointmentMapper;
 import com.edu.sena.Petcare.models.Appointment;
 import com.edu.sena.Petcare.models.AppointmentStatus;
 import com.edu.sena.Petcare.dto.AppointmentRegistrationDTO;
 import com.edu.sena.Petcare.repository.*;
+import com.edu.sena.Petcare.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,70 +25,105 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final VeterinaryClinicRepository veterinaryClinicRepository;
     private final ServicesRepository serviceRepository;
     private final PetRepository petRepository;
+    private final AppointmentMapper appointmentMapper;
 
     @Override
-    public Appointment create(Appointment appointment) {
-        if (appointment.getStatus() == null) {
-            appointment.setStatus(AppointmentStatus.PENDING);
+    public AppointmentDTO create(AppointmentDTO appointmentDto) {
+        // This method is rarely used directly if createFromDto exists, 
+        // but kept for interface consistency.
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentDate(appointmentDto.getAppointmentDate());
+        appointment.setAppointmentTime(appointmentDto.getAppointmentTime());
+        appointment.setReason(appointmentDto.getReason());
+        
+        try {
+            appointment.setStatus(appointmentDto.getStatus() != null ? 
+                AppointmentStatus.valueOf(appointmentDto.getStatus().toUpperCase()) : 
+                AppointmentStatus.PENDING);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado de cita inválido: " + appointmentDto.getStatus());
         }
-        return appointmentRepository.save(appointment);
+        
+        return appointmentMapper.toDTO(appointmentRepository.save(appointment));
     }
 
     @Override
-    public Appointment createFromDto(AppointmentRegistrationDTO dto) {
+    public AppointmentDTO createFromDto(AppointmentRegistrationDTO dto) {
         Appointment appointment = new Appointment();
-        appointment.setAppointmentDate(dto.getAppointmentDate());
-        appointment.setAppointmentTime(dto.getAppointmentTime());
+        
+        if (dto.getAppointmentDate() != null) {
+            appointment.setAppointmentDate(LocalDate.parse(dto.getAppointmentDate()));
+        }
+        
+        if (dto.getAppointmentTime() != null) {
+            String timeStr = dto.getAppointmentTime();
+            if (timeStr.length() == 5) timeStr += ":00";
+            appointment.setAppointmentTime(LocalTime.parse(timeStr));
+        }
+        
         appointment.setReason(dto.getReason());
-        appointment.setStatus(dto.getStatus() != null ? 
-            AppointmentStatus.valueOf(dto.getStatus().toUpperCase()) : 
-            AppointmentStatus.PENDING);
+
+        try {
+            appointment.setStatus(dto.getStatus() != null ? 
+                AppointmentStatus.valueOf(dto.getStatus().toUpperCase()) : 
+                AppointmentStatus.PENDING);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado de cita inválido: " + dto.getStatus());
+        }
 
         appointment.setCustomer(customerRepository.findById(dto.getCustomerId())
-            .orElseThrow(() -> new RuntimeException("Cliente no encontrado")));
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado con id: " + dto.getCustomerId())));
         
         appointment.setVeterinaryClinic(veterinaryClinicRepository.findById(dto.getClinicId())
-            .orElseThrow(() -> new RuntimeException("Clínica no encontrada")));
+            .orElseThrow(() -> new RuntimeException("Clínica no encontrada con id: " + dto.getClinicId())));
 
         if (dto.getServiceId() != null) {
             appointment.setService(serviceRepository.findById(dto.getServiceId())
-                .orElse(null));
+                .orElseThrow(() -> new RuntimeException("Servicio no encontrado con id: " + dto.getServiceId())));
         }
 
         if (dto.getPetId() != null) {
             appointment.setPet(petRepository.findById(dto.getPetId())
-                .orElse(null));
+                .orElseThrow(() -> new RuntimeException("Pet no encontrado con id: " + dto.getPetId())));
         }
 
-        return appointmentRepository.save(appointment);
+        return appointmentMapper.toDTO(appointmentRepository.save(appointment));
     }
 
     @Override
-    public List<Appointment> findAll() {
-        return appointmentRepository.findAll();
+    public List<AppointmentDTO> findAll() {
+        return appointmentRepository.findAll().stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Appointment> findByCustomerId(Long customerId) {
-        return appointmentRepository.findByCustomerId(customerId);
+    public List<AppointmentDTO> findByCustomerId(Long customerId) {
+        return appointmentRepository.findByCustomerId(customerId).stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Appointment> findByClinicId(Long clinicId) {
-        return appointmentRepository.findByVeterinaryClinicId(clinicId);
+    public List<AppointmentDTO> findByClinicId(Long clinicId) {
+        return appointmentRepository.findByVeterinaryClinicId(clinicId).stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Appointment updateStatus(Long id, String status) {
+    public AppointmentDTO updateStatus(Long id, String status) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         appointment.setStatus(AppointmentStatus.valueOf(status.toUpperCase()));
-        return appointmentRepository.save(appointment);
+        return appointmentMapper.toDTO(appointmentRepository.save(appointment));
     }
 
     @Override
-    public List<Appointment> findByPetId(Long petId) {
-        return appointmentRepository.findByPetId(petId);
+    public List<AppointmentDTO> findByPetId(Long petId) {
+        return appointmentRepository.findByPetId(petId).stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

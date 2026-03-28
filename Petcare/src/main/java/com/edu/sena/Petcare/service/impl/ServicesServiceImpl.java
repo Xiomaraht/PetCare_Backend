@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.service.Impl;
+package com.edu.sena.Petcare.service.impl;
 
 import java.util.List;
 import java.util.ArrayList;

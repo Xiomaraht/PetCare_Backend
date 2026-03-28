@@ -1,4 +1,4 @@
-package com.edu.sena.Petcare.service.Impl;
+package com.edu.sena.Petcare.service.impl;
 
 import java.util.List;
 
@@ -32,7 +32,14 @@ public class VeterinaryClinicServiceImpl implements VeterinaryClinicService {
 
         VeterinaryClinic veterinaryClinic = new VeterinaryClinic();
         veterinaryClinic.setName(veterinaryClinicDTO.getName());
-        veterinaryClinic.setNit(veterinaryClinicDTO.getNit());
+        
+        // Use documentNumber as nit if nit is missing (important for frontend compatibility)
+        if (veterinaryClinicDTO.getNit() == null || veterinaryClinicDTO.getNit().trim().isEmpty()) {
+            veterinaryClinic.setNit(veterinaryClinicDTO.getDocumentNumber());
+        } else {
+            veterinaryClinic.setNit(veterinaryClinicDTO.getNit());
+        }
+        
         veterinaryClinic.setAddress(veterinaryClinicDTO.getAddress());
         veterinaryClinic.setPhone(veterinaryClinicDTO.getPhone());
         veterinaryClinic.setEmail(veterinaryClinicDTO.getEmail());

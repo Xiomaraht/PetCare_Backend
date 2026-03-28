@@ -183,7 +183,7 @@ public class DataInitializer implements CommandLineRunner {
                  vetAdmin = userRepository.save(vetAdmin);
 
                  VeterinaryClinic petitos = new VeterinaryClinic();
-                 petitos.setName("Petitos");
+                 petitos.setName("Petitoss");
                  petitos.setNit("900.123.456-7");
                  petitos.setAddress("Calle 123 # 45-67");
                  petitos.setPhone("3001234567");
@@ -237,7 +237,18 @@ public class DataInitializer implements CommandLineRunner {
             });
 
         // Buscar la mascota de prueba (Milo u otra existente)
-        Pet milo = petRepository.findAll().stream()
+        // Buscar la mascota de prueba (Milo u otra existente) vinculandola al dueño si está suelta
+        petRepository.findAll().stream()
+            .filter(p -> p.getName().equalsIgnoreCase("Milo"))
+            .forEach(p -> {
+                if (p.getCustomer() == null) {
+                    p.setCustomer(customerPrueba);
+                    petRepository.save(p);
+                    System.out.println("Mascota 'Milo' vinculada manualmente al usuario 'prueba'.");
+                }
+            });
+
+        petRepository.findAll().stream()
             .filter(p -> p.getCustomer() != null && p.getCustomer().getId().equals(customerPrueba.getId()))
             .findFirst().orElseGet(() -> {
                 Pet pet = new Pet();
@@ -250,11 +261,11 @@ public class DataInitializer implements CommandLineRunner {
                 if (raceRepository.count() > 0) {
                     pet.setRaza(raceRepository.findAll().get(0));
                 }
-                System.out.println("Mascota 'Milo' creada para el usuario 'prueba'.");
+                System.out.println("Mascota 'Milo' creada desde cero para el usuario 'prueba'.");
                 return petRepository.save(pet);
             });
 
-        VeterinaryClinic petitosClinic = veterinaryClinicRepository.findAll().stream()
+        veterinaryClinicRepository.findAll().stream()
             .filter(v -> v.getUser() != null && v.getUser().getUsername().equals("petitos"))
             .findFirst().orElse(null);
         
@@ -266,6 +277,16 @@ public class DataInitializer implements CommandLineRunner {
                 System.out.println("Clinica " + vc.getName() + " auto-aprobada para visibilidad.");
             }
         });
+
+        // CLEANUP: Eliminar clínicas duplicadas o con nombres incorrectos
+        veterinaryClinicRepository.findAll().stream()
+            .filter(v -> v.getName().equalsIgnoreCase("Clinica Petitos"))
+            .forEach(v -> {
+                // First delete associated appointments if any to avoid constraint issues
+                appointmentRepository.findByVeterinaryClinicId(v.getId()).forEach(appointmentRepository::delete);
+                veterinaryClinicRepository.delete(v);
+                System.out.println("CLINICA REDUNDANTE '" + v.getName() + "' eliminada.");
+            });
 
         // CLEANUP: Eliminar citas de prueba que quedaron atascadas en la base de datos (Ej: Milo)
         appointmentRepository.findAll().forEach(app -> {

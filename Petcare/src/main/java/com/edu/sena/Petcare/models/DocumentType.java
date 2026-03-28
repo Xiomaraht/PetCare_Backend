@@ -1,5 +1,7 @@
 package com.edu.sena.Petcare.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -11,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "document_type")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DocumentType {
     @EqualsAndHashCode.Include
     @Id
@@ -24,10 +27,12 @@ public class DocumentType {
     private String abreviation;
 
     //relacion ManyToOne con Customer
+    @JsonIgnore
     @OneToMany(mappedBy = "documentType")
     private List<Customer> customers;
 
     //relacion ManyToOne con Employee
+    @JsonIgnore
     @OneToMany(mappedBy = "documentType")
     private List<Employee> empleados;
 

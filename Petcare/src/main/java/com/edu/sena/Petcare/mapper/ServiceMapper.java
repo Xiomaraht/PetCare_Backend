@@ -4,7 +4,6 @@ import com.edu.sena.Petcare.dto.ServicesDTO;
 import com.edu.sena.Petcare.dto.ServicesRegistrationDTO; 
 import com.edu.sena.Petcare.dto.VeterinaryClinicDTO;
 import com.edu.sena.Petcare.models.Services; 
-import com.edu.sena.Petcare.models.VeterinaryClinic;
 
 import java.util.stream.Collectors;
 import java.util.ArrayList;

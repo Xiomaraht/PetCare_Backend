@@ -1,6 +1,7 @@
 package com.edu.sena.Petcare.models;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "pets")
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pet {
 
     @Id
@@ -44,14 +45,21 @@ public class Pet {
     @Column(nullable = false)
     private Boolean status = true;
 
-    //relacion OneToMany con Race
+    // Relación blindada con @JsonIgnore para evitar LazyInitializationException
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_race")
     private Race raza; 
 
-    //relacion OneToMany con Customer
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_customer")
     private Customer customer; 
-    
+
+    // Métodos explícitos para asegurar compatibilidad si Lombok falla por el JDK
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 }

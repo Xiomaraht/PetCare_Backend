@@ -1,5 +1,6 @@
 package com.edu.sena.Petcare.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 @SuperBuilder
 @Entity
 @Table(name = "appointments")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Appointment extends AbstractAuditingEntity {
 
     @Id

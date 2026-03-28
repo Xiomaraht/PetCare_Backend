@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
             responseMessage,
             HttpStatus.CONFLICT.value(), 
-            "Violación de restricción de integridad de base de datos");
+            "Violación de restricción de integridad de base de datos: " + msg);
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
